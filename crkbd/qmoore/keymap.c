@@ -22,17 +22,17 @@ extern uint8_t is_master;
 // Layer names don't all need to be of the same length, obviously, and you can also skip them
 // entirely and just use numbers.
 #define _QWERTY 0
+#define _CODE 2
 #define _LOWER 3
 #define _RAISE 4
 #define _ADJUST 16
 
 enum custom_keycodes {
   QWERTY = SAFE_RANGE,
+  CODE,
   LOWER,
   RAISE,
-  ADJUST,
-  BACKLIT,
-  RGBRST
+  ADJUST
 };
 
 enum macro_keycodes {
@@ -41,9 +41,9 @@ enum macro_keycodes {
 
 #define KC______ KC_TRNS
 #define KC_XXXXX KC_NO
+#define KC_RESET RESET
 #define KC_LOWER LOWER
 #define KC_RAISE RAISE
-#define KC_RST   RESET
 #define KC_LRST  RGBRST
 #define KC_LTOG  RGB_TOG
 #define KC_LHUI  RGB_HUI
@@ -52,30 +52,43 @@ enum macro_keycodes {
 #define KC_LSAD  RGB_SAD
 #define KC_LVAI  RGB_VAI
 #define KC_LVAD  RGB_VAD
-#define KC_LSMOD RGB_SMOD
+#define KC_LMOD  RGB_MOD
 #define KC_CTLTB CTL_T(KC_TAB)
 #define KC_CLTEN CTL_T(KC_ENT)
+#define KC_CQUO  LT(_CODE, KC_QUOT)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_QWERTY] = LAYOUT_kc( \
   //,-----------------------------------------.                ,-----------------------------------------.
        GESC,     Q,     W,     E,     R,     T,                      Y,     U,     I,     O,     P,  BSPC,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
-      CTLTB,     A,     S,     D,     F,     G,                      H,     J,     K,     L,  SCLN,  QUOT,\
+      CTLTB,     A,     S,     D,     F,     G,                      H,     J,     K,     L,  SCLN,  CQUO,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
-       LSFT,     Z,     X,     C,     V,     B,                      N,     M,  COMM,   DOT,  SLSH,  RSFT,\
+       LSPO,     Z,     X,     C,     V,     B,                      N,     M,  COMM,   DOT,  SLSH,  RSPC,\
   //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
                                   LGUI, LOWER,   SPC,    CLTEN, RAISE, RALT \
                               //`--------------------'  `--------------------'
   ),
 
+    [_CODE] = LAYOUT_kc( \
+  //,-----------------------------------------.                ,-----------------------------------------.
+        GRV, TILDE, _____, _____, _____, _____,                   PIPE, MINUS,   EQL,  LPRN,  RPRN,   DEL,\
+  //|------+------+------+------+------+------|                |------+------+------+------+------+------|
+      _____,  PLUS,  PLUS,  UNDS,  LCBR,  RCBR,                   BSLS,  LBRC,  RBRC, _____, _____, _____,\
+  //|------+------+------+------+------+------|                |------+------+------+------+------+------|
+      _____, _____, _____, _____, _____, _____,                  _____,  LCBR,  RCBR, _____, _____, _____,\
+  //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
+                                  _____, _____, _____,    _____, _____, _____\
+                              //`--------------------'  `--------------------'
+  ),
+
   [_LOWER] = LAYOUT_kc( \
   //,-----------------------------------------.                ,-----------------------------------------.
-        GRV, _____, _____, _____,  LCBR,  RCBR,                  _____, _____, _____, _____, _____,   DEL,\
+        GRV,  EXLM,    AT,  HASH,   DLR,  PERC,                   CIRC,  AMPR,  ASTR,  LPRN,  RPRN,   DEL,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
-      _____, _____, _____, _____,  LPRN,  RPRN,                  _____,  MINS,  PLUS, _____, _____,  BSLS,\
+      _____,     1,     2,     3,     4,     5,                      6,     7,     8,     9,     0,  BSLS,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
-      _____, _____, _____, _____,  LBRC,  RBRC,                  _____,  UNDS,   EQL, _____, _____, _____,\
+      _____, _____, _____,  UNDS,  UNDS,  UNDS,                   PLUS, MINUS,   EQL,  PLUS,  UNDS, _____,\
   //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
                                   _____, _____, _____,    _____, _____, _____\
                               //`--------------------'  `--------------------'
@@ -83,25 +96,25 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_RAISE] = LAYOUT_kc( \
   //,-----------------------------------------.                ,-----------------------------------------.
-       GRV,     1,     2,     3,     4,     5,                      6,     7,     8,     9,     0,   DEL,\
+        GRV,     1,     2,     3,     4,     5,                      6,     7,     8,     9,     0,   DEL,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
-      _____,  EXLM,    AT,  HASH,  PLUS,  EQL,                    LEFT,  DOWN,    UP,  RGHT, COLON,  DQUO,\
+      _____,  EXLM,    AT,  HASH,   DLR,  PERC,                   LEFT,  DOWN,    UP,  RGHT, COLON,  DQUO,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
-      _____, _____, _____, _____, MINUS, _____,                   HOME,   END,    LT,    GT,  QUES, _____,\
+      _____, _____, _____, _____, _____, _____,                  _____,   END,    LT,    GT,  QUES, _____,\
   //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
-                                   LGUI, LOWER,   SPC,    CLTEN, RAISE, RALT \
+                                  _____, _____, _____,    _____, _____, _____\
                               //`--------------------'  `--------------------'
   ),
 
   [_ADJUST] = LAYOUT_kc( \
   //,-----------------------------------------.                ,-----------------------------------------.
-        RST,    F1,    F2,    F3,    F4,    F5,                   PSCR,  SLCK, PAUSE,   INS,   ESC,   DEL,\
+      RESET,    F1,    F2,    F3,    F4,    F5,                   PSCR,  SLCK, PAUSE,   INS,   ESC,   DEL,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
       CTLTB,    F6,    F7,    F8,    F9,   F10,                   VOLU,  MNXT,  MPRV,  MPLY, XXXXX, _____,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
       LSFT,    F11,   F12, XXXXX, XXXXX, XXXXX,                   VOLD,  RCTL,  RALT,  RGUI, XXXXX, _____,\
   //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
-                                   LGUI, LOWER,   SPC,    CLTEN, RAISE, RALT \
+                                  _____, _____, _____,    _____, _____, _____\
                               //`--------------------'  `--------------------'
   )
 };
@@ -144,8 +157,8 @@ const char *read_keylogs(void);
 
 // const char *read_mode_icon(bool swap);
 // const char *read_host_led_state(void);
-// void set_timelog(void);
-// const char *read_timelog(void);
+void set_timelog(void);
+const char *read_timelog(void);
 
 void matrix_scan_user(void) {
    iota_gfx_task();
@@ -156,10 +169,10 @@ void matrix_render_user(struct CharacterMatrix *matrix) {
     // If you want to change the display of OLED, you need to change here
     matrix_write_ln(matrix, read_layer_state());
     matrix_write_ln(matrix, read_keylog());
-    matrix_write_ln(matrix, read_keylogs());
+    //matrix_write_ln(matrix, read_keylogs());
     //matrix_write_ln(matrix, read_mode_icon(keymap_config.swap_RALT_lgui));
     //matrix_write_ln(matrix, read_host_led_state());
-    //matrix_write_ln(matrix, read_timelog());
+    matrix_write_ln(matrix, read_timelog());
   } else {
     matrix_write(matrix, read_logo());
   }
@@ -181,8 +194,10 @@ void iota_gfx_task_user(void) {
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   if (record->event.pressed) {
+#ifdef SSD1306OLED
     set_keylog(keycode, record);
-    // set_timelog();
+#endif	
+    set_timelog();
   }
 
   switch (keycode) {
@@ -220,25 +235,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
         return false;
         break;
-    case RGB_MOD:
-      #ifdef RGBLIGHT_ENABLE
-        if (record->event.pressed) {
-          rgblight_mode(RGB_current_mode);
-          rgblight_step();
-          RGB_current_mode = rgblight_config.mode;
-        }
-      #endif
-      return false;
-      break;
-    case RGBRST:
-      #ifdef RGBLIGHT_ENABLE
-        if (record->event.pressed) {
-          eeconfig_update_rgblight_default();
-          rgblight_enable();
-          RGB_current_mode = rgblight_config.mode;
-        }
-      #endif
-      break;
   }
   return true;
 }
